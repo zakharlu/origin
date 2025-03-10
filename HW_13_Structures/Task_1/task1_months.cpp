@@ -10,7 +10,7 @@ enum class months
     june,
     july,
     august,
-    septenber,
+    september,
     october,
     november,
     december
@@ -28,40 +28,40 @@ int main()
             case static_cast<months>(0):
                 std::cout << "До свидания!" << std::endl;
                 break;
-            case static_cast<months>(1):
+            case months::january:
                 std::cout << "Январь" << std::endl;
                 break;
-            case static_cast<months>(2):
+            case months::february:
                 std::cout << "Февраль" << std::endl;
                 break;
-            case static_cast<months>(3):
+            case months::march:
                 std::cout << "Март" << std::endl;
                 break;
-            case static_cast<months>(4):
+            case months::april:
                 std::cout << "Апрель" << std::endl;
                 break;
-            case static_cast<months>(5):
+            case months::may:
                 std::cout << "Май" << std::endl;
                 break;
-            case static_cast<months>(6):
+            case months::june:
                 std::cout << "Июнь" << std::endl;
                 break;
-            case static_cast<months>(7):
+            case months::july:
                 std::cout << "Июль" << std::endl;
                 break;
-            case static_cast<months>(8):
+            case months::august:
                 std::cout << "Август" << std::endl;
                 break;
-            case static_cast<months>(9):
+            case months::september:
                 std::cout << "Сентябрь" << std::endl;
                 break;
-            case static_cast<months>(10):
+            case months::october:
                 std::cout << "Октябрь" << std::endl;
                 break;
-            case static_cast<months>(11):
+            case months::november:
                 std::cout << "Ноябрь" << std::endl;
                 break;
-            case static_cast<months>(12):
+            case months::december:
                 std::cout << "Декабрь" << std::endl;
                 break;
             default:
