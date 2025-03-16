@@ -10,7 +10,7 @@ class Address {
     int flat;
 
 public:
-    Address (std::string city, std::string street, int house, int flat) {
+    Address(std::string city, std::string street, int house, int flat) {
         this->city = city;
         this->street = street;
         this->house = house;
@@ -60,7 +60,7 @@ int main()
     }
 
     output_file << N << std::endl;
-    for (int i = N-1; i >= 0; --i) {
+    for (int i = N - 1; i >= 0; --i) {
         if (i != 0) {
             output_file << arr_addr[i].get_output_address() << std::endl;
         }
