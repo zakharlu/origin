@@ -10,11 +10,9 @@ public:
         sides_cnt = 0;
         name = "Фигура";
     }
-    void get_name() {
-        std::cout << name << ": ";
-    }
-    void get_sides_cnt() {
-        std::cout << sides_cnt << std::endl;
+    
+    virtual void get_sides_angles_value() {
+        std::cout << name << ":" << std::endl;
     }
 };
 
@@ -37,8 +35,8 @@ public:
         this->C = C;
     }
 
-    void get_sides_angles_value() {
-        std::cout << std::endl;
+    void get_sides_angles_value() override {
+        Figure::get_sides_angles_value();
         std::cout << "Стороны: ";
         std::cout << "a=" << a << " ";
         std::cout << "b=" << b << " ";
@@ -136,8 +134,8 @@ public:
         this->D = D;
     }
 
-    void get_sides_angles_value() {
-        std::cout << std::endl;
+    void get_sides_angles_value() override {
+        Figure::get_sides_angles_value();
         std::cout << "Стороны: ";
         std::cout << "a=" << a << " ";
         std::cout << "b=" << b << " ";
@@ -237,57 +235,50 @@ public:
 };
 
 
-void print_info_3(Triangle* ptr_triangle);
-void print_info_4(Quad* ptr_quad);
+void print_info(Figure* base);
 
 int main() {
     setlocale(LC_ALL, "Russian");
     Triangle triangle(10, 20, 30, 50, 60, 70);
-    triangle.get_name();
-    triangle.get_sides_angles_value();
-
+    Figure* ptr_figure = &triangle;
+    print_info(ptr_figure);
 
     Right_Triangle right_triangle(10, 20, 30, 50, 60);
-    Triangle* ptr_right_triangle = &right_triangle;
-    print_info_3(ptr_right_triangle);
+    Figure* ptr_right_triangle = &right_triangle;
+    print_info(ptr_right_triangle);
 
     Isosceles_Triangle isosceles_triangle(10, 20, 10, 50, 60, 50);
-    Triangle* ptr_isosceles_triangle = &isosceles_triangle;
-    print_info_3(ptr_isosceles_triangle);
+    Figure* ptr_isosceles_triangle = &isosceles_triangle;
+    print_info(ptr_isosceles_triangle);
 
     Equil_Triangle equil_triangle(30);
-    Triangle* ptr_equil_triangle = &equil_triangle;
-    print_info_3(ptr_equil_triangle);
+    Figure* ptr_equil_triangle = &equil_triangle;
+    print_info(ptr_equil_triangle);
 
-   Quad quad(10, 20, 30, 40, 50, 60, 70 ,80);
-   quad.get_name();
-   quad.get_sides_angles_value();
+    Quad quad(10, 20, 30, 40, 50, 60, 70 ,80);
+    Figure* ptr_quad = &quad;
+    print_info(ptr_quad);
 
-   Rectangle rectangle(10, 20);
-   Quad* ptr_rectangle = &rectangle;
-   print_info_4(ptr_rectangle);
+    Rectangle rectangle(10, 20);
+    Figure* ptr_rectangle = &rectangle;
+    print_info(ptr_rectangle);
 
-   Square square(20);
-   Square* ptr_square = &square;
-   print_info_4(ptr_square);
+    Square square(20);
+    Figure* ptr_square = &square;
+    print_info(ptr_square);
 
-   Parallelogram parallelogram(20, 30, 30, 40);
-   Parallelogram* ptr_parallelogram = &parallelogram;
-   print_info_4(ptr_parallelogram);
+    Parallelogram parallelogram(20, 30, 30, 40);
+    Figure* ptr_parallelogram = &parallelogram;
+    print_info(ptr_parallelogram);
 
-   Romb romb(30, 30, 40);
-   Romb* ptr_romb = &romb;
-   print_info_4(ptr_romb);
-   
+    Romb romb(30, 30, 40);
+    Figure* ptr_romb = &romb;
+    print_info(ptr_romb);
+
    return 0;
 }
 
-void print_info_3(Triangle* ptr_triangle) {
-    ptr_triangle->get_name();
-    ptr_triangle->get_sides_angles_value();
-}
 
-void print_info_4(Quad* ptr_quad) {
-    ptr_quad->get_name();
-    ptr_quad->get_sides_angles_value();
+void print_info(Figure* base) {
+    base->get_sides_angles_value();
 }
