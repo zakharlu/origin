@@ -12,4 +12,15 @@ ${SOURCE_DIR}/Rectangle.cpp
 ${SOURCE_DIR}/Right_Triangle.cpp
 ${SOURCE_DIR}/Romb.cpp
 ${SOURCE_DIR}/Square.cpp
-${SOURCE_DIR}/Triangle.cpp)
+${SOURCE_DIR}/Triangle.cpp
+${SOURCE_DIR}/Equil_Triangle.h
+${SOURCE_DIR}/Figure.h
+${SOURCE_DIR}/Isosceles_Triangle.h
+${SOURCE_DIR}/Parallelogram.h
+${SOURCE_DIR}/Quad.h
+${SOURCE_DIR}/Rectangle.h
+${SOURCE_DIR}/Right_Triangle.h
+${SOURCE_DIR}/Romb.h
+${SOURCE_DIR}/Square.h
+${SOURCE_DIR}/Triangle.h
+)
