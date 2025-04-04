@@ -22,5 +22,4 @@ ${SOURCE_DIR}/Rectangle.h
 ${SOURCE_DIR}/Right_Triangle.h
 ${SOURCE_DIR}/Romb.h
 ${SOURCE_DIR}/Square.h
-${SOURCE_DIR}/Triangle.h
-)
+${SOURCE_DIR}/Triangle.h)
