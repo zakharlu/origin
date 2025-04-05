@@ -1,6 +1,0 @@
-C:/Netology/HOMEWORKS/HW_25/Task_3/out/build/x64-Debug/CMakeFiles/Task3Exe.dir
-C:/Netology/HOMEWORKS/HW_25/Task_3/out/build/x64-Debug/CMakeFiles/edit_cache.dir
-C:/Netology/HOMEWORKS/HW_25/Task_3/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
-C:/Netology/HOMEWORKS/HW_25/Task_3/out/build/x64-Debug/DinamycLib/DinamycLib/CMakeFiles/DinamycLib.dir
-C:/Netology/HOMEWORKS/HW_25/Task_3/out/build/x64-Debug/DinamycLib/DinamycLib/CMakeFiles/edit_cache.dir
-C:/Netology/HOMEWORKS/HW_25/Task_3/out/build/x64-Debug/DinamycLib/DinamycLib/CMakeFiles/rebuild_cache.dir
