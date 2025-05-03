@@ -1,5 +1,0 @@
-cmake_minimum_required(VERSION 3.14)
-project(Task3)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/DinamycLib/DinamycLib)
-add_executable(Task3Exe ${CMAKE_CURRENT_SOURCE_DIR}/SRC/SRC.cpp)
-target_link_libraries(Task3Exe DinamycLib)
