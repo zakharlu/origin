@@ -1,215 +1,156 @@
+#include "transport.h"
 #include <iostream>
-#include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 #include <algorithm>
-//#include "VehicleRacingLib.h"
-#include "../VehicleRacingLib/Vehicle.h"
-#include "../VehicleRacingLib/GroundVehicle.h"
-#include "../VehicleRacingLib/AirVehicle.h"
-#include "../VehicleRacingLib/Camel.h"
-#include "../VehicleRacingLib/FastCamel.h"
-#include "../VehicleRacingLib/Centaur.h"
-#include "../VehicleRacingLib/AllTerrainBoots.h"
-#include "../VehicleRacingLib/MagicCarpet.h"
-#include "../VehicleRacingLib/Eagle.h"
-#include "../VehicleRacingLib/Broom.h"
-#include "../VehicleRacingLib/Race.h"
 
-using namespace std;
+void printMainMenu() {
+    std::cout << "\nГоночный симулятор" << std::endl;
+    std::cout << "1. Гонка для наземного транспорта" << std::endl;
+    std::cout << "2. Гонка для воздушного транспорта" << std::endl;
+    std::cout << "3. Гонка для наземного и воздушного транспорта" << std::endl;
+    std::cout << "Выберите тип гонки: ";
+}
 
-// void printMainMenu();
-void printRaceTypeMenu();
-void printVehicleMenu(RaceType raceType);
-shared_ptr<Vehicle> createVehicle(int choice);
-RaceType getRaceTypeFromChoice(int choice);
-string getRaceTypeName(RaceType type);
+void printTransportList(const std::vector<Transport*>& transports,
+    const std::vector<bool>& registered) {
+    for (size_t i = 0; i < transports.size(); ++i) {
+        std::cout << i + 1 << ". " << transports[i]->getName();
+        if (registered[i]) std::cout << " (зарегистрирован)";
+        std::cout << std::endl;
+    }
+}
+
+bool isValidForRace(Transport* t, TransportType raceType) {
+    return raceType == TransportType::GROUND && t->getType() == TransportType::GROUND ||
+        raceType == TransportType::AIR && t->getType() == TransportType::AIR ||
+        raceType == TransportType::MIXED;
+}
+
+void conductRace(const std::vector<Transport*>& raceTransports, int distance) {
+    std::vector<std::pair<std::string, double>> results;
+
+    // Рассчитываем результаты
+    for (auto t : raceTransports) {
+        results.emplace_back(t->getName(), t->calcTimeRide(distance));
+    }
+
+    // Сортируем по времени
+    std::sort(results.begin(), results.end(),
+        [](const auto& a, const auto& b) { return a.second < b.second; });
+
+    // Выводим результаты
+    std::cout << "\n=== РЕЗУЛЬТАТЫ ГОНКИ ===" << std::endl;
+    std::cout << "Дистанция: " << distance << " км" << std::endl;
+    for (size_t i = 0; i < results.size(); ++i) {
+        std::cout << i + 1 << ". " << results[i].first
+            << ": " << results[i].second << " ч" << std::endl;
+    }
+}
 
 int main() {
     setlocale(LC_ALL, "Russian");
+    // Инициализация транспорта
+    size_t totalTransports = 0;
+    Transport** allTransports = makeTransports(totalTransports);
+    std::vector<Transport*> transportsList(allTransports, allTransports + totalTransports);
 
     while (true) {
         // Выбор типа гонки
-        printRaceTypeMenu();
-        int raceTypeChoice;
-        cin >> raceTypeChoice;
+        TransportType raceType;
+        while (true) {
+            printMainMenu();
+            int typeChoice;
+            std::cin >> typeChoice;
 
-        if (raceTypeChoice == 0) {
-            break;
+            if (typeChoice == 1) { raceType = TransportType::GROUND; break; }
+            if (typeChoice == 2) { raceType = TransportType::AIR; break; }
+            if (typeChoice == 3) { raceType = TransportType::MIXED; break; }
         }
-
-        RaceType raceType = getRaceTypeFromChoice(raceTypeChoice);
 
         // Ввод дистанции
-        double distance;
-        cout << "Укажите длину дистанции (должна быть положительна): ";
-        cin >> distance;
+        int distance;
+        std::cout << "\n Укажите длину дистанции (должна быть положительна): ";
+        std::cin >> distance;
         while (distance <= 0) {
-            cout << "Дистанция должна быть положительной. Попробуйте снова: ";
-            cin >> distance;
+            std::cout << "Дистанция должна быть положительной. Повторите ввод: ";
+            std::cin >> distance;
         }
 
-        // Создание гонки
-        Race race(raceType, distance);
+        // Регистрация транспорта
+        std::vector<Transport*> raceTransports;
+        std::vector<bool> registered(totalTransports, false);
 
-        // Регистрация транспортных средств
         while (true) {
             system("cls");
-            cout << "Гонка для " << getRaceTypeName(raceType) << ". Дистанция: " << distance << endl;
+            std::cout << std::endl;
+            std::cout << (raceType == TransportType::GROUND ? "Гонка для наземного транспорта" :
+                    raceType == TransportType::AIR ? "Гонка для воздушного транспорта" : "Гонка для смешанного транспорта")
+                << std::endl;
+            std::cout << "Расстояние: " << distance << " км" << std::endl;
+            std::cout << "\nДоступные транспортные средства:" << std::endl;
 
-            if (race.getVehicles().size() >= 2) {
-                cout << "Зарегистрированные транспортные средства:" << endl;
-                for (const auto& vehicle : race.getVehicles()) {
-                    cout << " - " << vehicle->getName() << endl;
-                }
-                cout << "\n1. Зарегистрировать транспорт" << endl;
-                cout << "2. Начать гонку" << endl;
-                cout << "Выберите действие: ";
+            printTransportList(transportsList, registered);
 
-                int action;
-                cin >> action;
+            std::cout << "0. Закончить регистрацию. Начать гонку" << std::endl;
+            std::cout << "Выберите транспорт или 0 для окончания процесса регистрации и начала гонки: ";
 
-                if (action == 2) {
-                    break;
-                }
-            }
-            else {
-                cout << "Должно быть зарегистрировано хотя бы 2 транспортных средства" << endl;
-            }
+            int transportChoice;
+            std::cin >> transportChoice;
 
-            printVehicleMenu(raceType);
-            int vehicleChoice;
-            cin >> vehicleChoice;
-
-            if (vehicleChoice == 0) {
-                if (race.getVehicles().size() >= 2) {
-                    break;
-                }
-                else {
-                    cout << "Необходимо зарегистрировать хотя бы 2 транспортных средства!" << endl;
+            if (transportChoice == 0) {
+                if (raceTransports.size() < 2) {
+                    std::cout << "Необходимо зарегистрировать минимум 2 транспортных средства!" << std::endl;
                     system("pause");
                     continue;
                 }
+                break;
             }
 
-            auto vehicle = createVehicle(vehicleChoice);
-            if (vehicle) {
-                if (race.addVehicle(vehicle)) {
-                    cout << vehicle->getName() << " успешно зарегистрирован!" << endl;
-                }
-                else {
-                    cout << "Невозможно зарегистрировать это транспортное средство для данной гонки или оно уже зарегистрировано" << endl;
-                }
-            }
-            else {
-                cout << "Неверный выбор транспортного средства" << endl;
+            if (transportChoice < 0 || transportChoice > totalTransports) {
+                continue;
             }
 
+            size_t index = transportChoice - 1;
+            Transport* selected = transportsList[index];
+
+            if (registered[index]) {
+                std::cout << "Это транспортное средство уже зарегистрировано!" << std::endl;
+                system("pause");
+                continue;
+            }
+
+            if (!isValidForRace(selected, raceType)) {
+                std::cout << "Этот транспорт не может участвовать в данной гонке!" << std::endl;
+                system("pause");
+                continue;
+            }
+
+            registered[index] = true;
+            raceTransports.push_back(selected);
+            std::cout << selected->getName() << " успешно зарегистрирован!" << std::endl;
             system("pause");
         }
 
-        // Проведение гонки и вывод результатов
-        auto results = race.getResults();
+        int choice;
 
-        cout << "\nРезультаты гонки:" << endl;
-        cout << "-----------------" << endl;
-        for (size_t i = 0; i < results.size(); ++i) {
-            cout << i + 1 << ". " << results[i].first << ". Время: " << results[i].second << endl;
-        }
-        cout << "-----------------" << endl;
+        // Проведение гонки
+        conductRace(raceTransports, distance);
+        system("pause");
 
-        cout << "\n1. Провести ещё одну гонку" << endl;
-        cout << "2. Выйти" << endl;
-        cout << "Выберите действие: ";
-
-        int finalChoice;
-        cin >> finalChoice;
-
-        if (finalChoice == 2) {
-            break;
-        }
+        // Предложение продолжить
+        std::cout << "\n1. Провести ещё одну гонку" << std::endl;
+        std::cout << "2. Выйти" << std::endl;
+        std::cout << "Выберите действие: ";
+        std::cin >> choice;
+        if (choice == 2) break;
     }
+
+    // Очистка памяти
+    for (size_t i = 0; i < totalTransports; ++i) {
+        delete allTransports[i];
+    }
+    delete[] allTransports;
 
     return 0;
-}
-
-void printRaceTypeMenu() {
-    system("cls");
-    cout << "Добро пожаловать в гоночный симулятор!" << endl;
-    cout << "1. Гонка для наземного транспорта" << endl;
-    cout << "2. Гонка для воздушного транспорта" << endl;
-    cout << "3. Гонка для наземного и воздушного транспорта" << endl;
-    cout << "0. Выйти" << endl;
-    cout << "Выберите тип гонки: ";
-}
-
-void printVehicleMenu(RaceType raceType) {
-    system("cls");
-    cout << "Доступные транспортные средства:" << endl;
-
-    vector<string> groundVehicles = {
-        "1. Верблюд",
-        "2. Верблюд-быстроход",
-        "3. Кентавр",
-        "4. Ботинки-вездеходы"
-    };
-
-    vector<string> airVehicles = {
-        "5. Ковёр-самолёт",
-        "6. Орёл",
-        "7. Метла"
-    };
-
-    if (raceType == RaceType::GROUND) {
-        for (const auto& item : groundVehicles) {
-            cout << item << endl;
-        }
-    }
-    else if (raceType == RaceType::AIR) {
-        for (const auto& item : airVehicles) {
-            cout << item << endl;
-        }
-    }
-    else {
-        for (const auto& item : groundVehicles) {
-            cout << item << endl;
-        }
-        for (const auto& item : airVehicles) {
-            cout << item << endl;
-        }
-    }
-
-    cout << "0. Закончить регистрацию" << endl;
-    cout << "Выберите транспортное средство: ";
-}
-
-shared_ptr<Vehicle> createVehicle(int choice) {
-    switch (choice) {
-    case 1: return make_shared<Camel>();
-    case 2: return make_shared<FastCamel>();
-    case 3: return make_shared<Centaur>();
-    case 4: return make_shared<AllTerrainBoots>();
-    case 5: return make_shared<MagicCarpet>();
-    case 6: return make_shared<Eagle>();
-    case 7: return make_shared<Broom>();
-    default: return nullptr;
-    }
-}
-
-RaceType getRaceTypeFromChoice(int choice) {
-    switch (choice) {
-    case 1: return RaceType::GROUND;
-    case 2: return RaceType::AIR;
-    case 3: return RaceType::MIXED;
-    default: return RaceType::GROUND;
-    }
-}
-
-string getRaceTypeName(RaceType type) {
-    switch (type) {
-    case RaceType::GROUND: return "наземного транспорта";
-    case RaceType::AIR: return "воздушного транспорта";
-    case RaceType::MIXED: return "всех типов транспорта";
-    default: return "";
-    }
 }

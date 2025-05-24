@@ -104,7 +104,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;VEHICLERACINGLIB_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VEHICLERACINGLIB_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -131,30 +131,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AirVehicle.cpp" />
-    <ClCompile Include="AllTerrainBoots.cpp" />
-    <ClCompile Include="Broom.cpp" />
-    <ClCompile Include="Camel.cpp" />
-    <ClCompile Include="Centaur.cpp" />
-    <ClCompile Include="Eagle.cpp" />
-    <ClCompile Include="FastCamel.cpp" />
-    <ClCompile Include="GroundVehicle.cpp" />
-    <ClCompile Include="MagicCarpet.cpp" />
-    <ClCompile Include="Race.cpp" />
+    <ClCompile Include="transport_impl.cpp" />
     <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AirVehicle.h" />
-    <ClInclude Include="AllTerrainBoots.h" />
-    <ClInclude Include="Broom.h" />
-    <ClInclude Include="Camel.h" />
-    <ClInclude Include="Centaur.h" />
-    <ClInclude Include="Eagle.h" />
-    <ClInclude Include="FastCamel.h" />
-    <ClInclude Include="GroundVehicle.h" />
-    <ClInclude Include="MagicCarpet.h" />
-    <ClInclude Include="Race.h" />
-    <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="transport.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

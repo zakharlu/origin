@@ -1,20 +1,24 @@
-cmake_minimum_required(VERSION 3.10)
-project(VehicleRacingApp)
+project(VehicleRacingApp VERSION 1.0)
 
-# Р”РѕР±Р°РІР»СЏРµРј РёСЃРїРѕР»РЅСЏРµРјС‹Р№ С„Р°Р№Р»
-add_executable(VehicleRacingApp main.cpp)
-
-# РџРѕРґРєР»СЋС‡Р°РµРј Р±РёР±Р»РёРѕС‚РµРєСѓ
-target_link_libraries(VehicleRacingApp PRIVATE VehicleRacingLib)
-add_dependencies(VehicleRacingApp VehicleRacingLib)
-
-# РџРѕРґРєР»СЋС‡Р°РµРј Р·Р°РіРѕР»РѕРІРѕС‡РЅС‹Рµ С„Р°Р№Р»С‹ Р±РёР±Р»РёРѕС‚РµРєРё
-target_include_directories(VehicleRacingApp PRIVATE 
-    ${CMAKE_SOURCE_DIR}/VehicleRacingLib
+# Создаем исполняемый файл
+add_executable(VehicleRacingApp 
+    main.cpp
 )
 
-# РєРѕРїРёСЂСѓРµРј DLL СЂСЏРґРѕРј СЃ РёСЃРїРѕР»РЅСЏРµРјС‹Рј С„Р°Р№Р»РѕРј
+# Линкуем с нашей библиотекой
+target_link_libraries(VehicleRacingApp PRIVATE VehicleRacingLib)
+
+# Для Windows: копируем DLL рядом с исполняемым файлом
 add_custom_command(TARGET VehicleRacingApp POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:VehicleRacingLib>
-        $<TARGET_FILE_DIR:VehicleRacingApp>)
+        $<TARGET_FILE_DIR:VehicleRacingApp>
+    VERBATIM
+)
+
+
+# Устанавливаем выходной каталог
+set_target_properties(VehicleRacingApp PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/VehicleRacingApp
+    OUTPUT_NAME "VehicleRacingApp"
+)

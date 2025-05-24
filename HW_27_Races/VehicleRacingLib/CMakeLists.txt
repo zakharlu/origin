@@ -1,26 +1,23 @@
-cmake_minimum_required(VERSION 3.10)
 project(VehicleRacingLib)
 
-
+# Создаем динамическую библиотеку
 add_library(VehicleRacingLib SHARED 
-    Vehicle.cpp
-    GroundVehicle.cpp
-    AirVehicle.cpp
-    Camel.cpp
-    FastCamel.cpp
-    Centaur.cpp
-    AllTerrainBoots.cpp
-    MagicCarpet.cpp
-    Eagle.cpp
-    Broom.cpp
-    Race.cpp
+    transport_impl.cpp
+)
+
+# Настройки экспорта
+target_compile_definitions(VehicleRacingLib 
+    PRIVATE VEHICLERACINGLIB_EXPORTS
+)
+set_target_properties(VehicleRacingLib PROPERTIES
+    WINDOWS_EXPORT_ALL_SYMBOLS TRUE
+    OUTPUT_NAME "VehicleRacing"
 )
 
 
+# Публичные заголовки
 target_include_directories(VehicleRacingLib PUBLIC 
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:include>
 )
 
-
- target_compile_definitions(VehicleRacingLib PRIVATE VEHICLERACINGLIB_EXPORTS)
- set_target_properties(VehicleRacingLib PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
