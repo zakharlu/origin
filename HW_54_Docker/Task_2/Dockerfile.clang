@@ -1,0 +1,17 @@
+# Используем образ Ubuntu с установкой Clang
+FROM ubuntu:latest
+
+# Устанавливаем Clang и зависимости
+RUN apt-get update && apt-get install -y clang && rm -rf /var/lib/apt/lists/*
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем исходный код
+COPY main.cpp .
+
+# Компилируем приложение с Clang
+RUN clang++ -o myapp main.cpp -static
+
+# Запускаем приложение
+CMD ["./myapp"]
